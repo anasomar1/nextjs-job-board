@@ -1,6 +1,6 @@
+import JobFilterSidebar from "@/components/JobFilterSidebar";
 import JobListItem from "@/components/JobListItem";
 import prisma from "@/lib/prisma";
-import Image from "next/image";
 
 export default async function Home() {
   const jobs = await prisma.job.findMany({
@@ -8,10 +8,21 @@ export default async function Home() {
     orderBy: { createdAt: "desc" },
   });
   return (
-    <main>
-      {jobs.map((job) => (
-        <JobListItem job={job} key={job.id} />
-      ))}
+    <main className="max-w-5xl mx-auto px-3 my-10 space-y-10">
+      <header className="space-y-5 text-center">
+        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+          Developer Jobs
+        </h1>
+        <p className="text-muted-foreground">Find your dream job</p>
+      </header>
+      <section className="flex flex-col md:flex-row gap-4">
+        <JobFilterSidebar />
+        <div className="grow space-y-4">
+          {jobs.map((job) => (
+            <JobListItem job={job} key={job.id} />
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
